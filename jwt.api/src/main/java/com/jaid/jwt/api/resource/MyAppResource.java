@@ -24,7 +24,7 @@ public class MyAppResource {
 	@Autowired
 	private IMyAppController myAppController;
 	
-	@PreAuthorize("user.role")
+	//@PreAuthorize("user.role")
 	@RequestMapping(value = "/rest/myapp/mytask",method = RequestMethod.GET,headers = {"content-type=application/json"},consumes="application/json",produces = "application/json")
 	public @ResponseBody ResponseEntity<Response> mytask(@RequestBody MyAppRequest myAppRequest) {
 		final HttpHeaders httpHeaders= new HttpHeaders();

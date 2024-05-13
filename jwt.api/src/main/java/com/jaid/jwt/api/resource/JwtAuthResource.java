@@ -23,7 +23,7 @@ public class JwtAuthResource {
 	@Autowired
 	private IJwtAuthController jwtAuthController;
 	
-	@PreAuthorize("hasRole(ROLE_USER)")
+	//@PreAuthorize("hasRole(ROLE_USER)")
 	@RequestMapping(value = "/api/jwt/generate-token",method = RequestMethod.POST,headers = {"content-type=application/json"},consumes="application/json",produces = "application/json")
 	public @ResponseBody ResponseEntity<Response> mytask(@RequestBody UserData userDataReqeust) {
 		final HttpHeaders httpHeaders= new HttpHeaders();

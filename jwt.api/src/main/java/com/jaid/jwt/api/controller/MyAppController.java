@@ -14,6 +14,8 @@ public class MyAppController implements IMyAppController {
 		// TODO Auto-generated method stub
 		MyAppResponse myAppResponse = new MyAppResponse();
 		myAppResponse.setName("My name is :" + myAppRequest.getName());
+		
+		
 
 		return myAppResponse;
 	}
