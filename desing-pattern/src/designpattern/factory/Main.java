@@ -3,9 +3,14 @@ package designpattern.factory;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,42 +63,82 @@ public class Main {
 	     employee.setName("Jai");
 	     employee.setId("1");
 	     employee.setDept("IT");
+	     List<Long> mobileNumsList = new ArrayList<Long>();
+	     mobileNumsList.add((long) 123456789);
+	     mobileNumsList.add((long) 234567891);
+	     employee.setMobileNums( mobileNumsList);
 	     employees.add(employee);
 
 	     employee = new Employee();
-	     employee.setSalary(8000.00);
+	     employee.setSalary(5000.00);
 	     employee.setName("Dhakar");
-	     employee.setId("2");
+	     employee.setId("1");
 	     employee.setDept("ADMIN");
+	     mobileNumsList = new ArrayList<Long>();
+	     mobileNumsList.add((long) 345678912);
+	     mobileNumsList.add((long) 456789123);
+	     employee.setMobileNums( mobileNumsList);
 	     employees.add(employee);
 	     
 	     employee = new Employee();
 	     employee.setSalary(10000.00);
 	     employee.setName("Prakash");
-	     employee.setId("3");
+	     employee.setId("1");
 	     employee.setDept("HR");
+	     mobileNumsList = new ArrayList<Long>();
+	     mobileNumsList.add((long) 567891234);
+	     mobileNumsList.add((long) 678912345);
+	     employee.setMobileNums( mobileNumsList);
 	     employees.add(employee);
 	     
 	     employee = new Employee();
 	     employee.setSalary(12000.00);
 	     employee.setName("Ajay");
-	     employee.setId("4");
+	     employee.setId("1");
 	     employee.setDept("HR");
+	     mobileNumsList = new ArrayList<Long>();
+	     mobileNumsList.add((long) 789123456);
+	     mobileNumsList.add((long) 891234567);
+	     employee.setMobileNums( mobileNumsList);
 	     employees.add(employee);
 	     
 	     
-	     Map<String, List<Employee>> deptToEmp = mapToEnum(employees);
-	     for (Map.Entry<String, List<Employee>> entry : deptToEmp.entrySet()) {
-	         //action.accept(entry.getKey(), entry.getValue());
-	     System.out.println(entry.getValue());
-	 }
+	     System.out.println("Employees Size: "+employees.size());
+	     
+	     List<String> employeeList = employees.stream().filter(x-> x.getSalary()>5000 ).map(Employee :: getName).collect(Collectors.toList());
+	     employeeList=employees.stream().sorted(Comparator.comparingDouble(Employee :: getSalary)).map(Employee :: getName).collect(Collectors.toList());
+	     List<Employee> empsWithLowestSalary = employees.stream()
+	    		    .collect(Collectors.groupingBy(Employee::getSalary, TreeMap::new, Collectors.toList()))
+	    		    .firstEntry()
+	    		    .getValue();
+	     
+			/*
+			 * List<Employee> secondLowestSalary = employees.stream()
+			 * .collect(Collectors.groupingBy(Employee ::getSalary));
+			 */
+	     Double secondemployee = employees.stream().sorted(Comparator.comparing(Employee :: getSalary)).map(Employee :: getSalary).distinct().collect(Collectors.toList()).get(1);
+	     System.out.println("Employees empsWithLowestSalary: "+empsWithLowestSalary.get(0));
+	     System.out.println("Employees Name with min salary: "+secondemployee);
+	     
+	     System.out.println("Mobile nums: "+employees.stream().flatMap(t -> t.getMobileNums().stream().sorted()).collect(Collectors.toList()));
+	     
+	     
+	    
+	    
+	     System.out.println("Salary Sums: "+ employees.stream().collect(Collectors.summingDouble(Employee ::getSalary)));
+	     // Map<String, List<Employee>> deptToEmp = mapToEnum(employees);
+		/*
+		 * for (Map.Entry<String, List<Employee>> entry : deptToEmp.entrySet()) {
+		 * //action.accept(entry.getKey(), entry.getValue());
+		 * System.out.println(entry.getValue()); }
+		 */
 	    // BiConsumer <Map.Entry<String, List<Employee>>,> = 
-	     deptToEmp.forEach((t, u) -> 
-	     {   System.out.println("index "+t);
-	    	 u.forEach(x-> System.out.println("Id "+ x.getId()+" "+x.getName()+" "+x.getDept()));
-	     }
-	    		 
-	    		 )  ;
+		/*
+		 * deptToEmp.forEach((t, u) -> { System.out.println("index "+t); u.forEach(x->
+		 * System.out.println("Id "+ x.getId()+" "+x.getName()+" "+x.getDept())); }
+		 * 
+		 * ) ;
+		 */
 	     
 	}
 
