@@ -1,7 +1,5 @@
 package algo.java;
 
-import java.util.LinkedList;
-
 public class LinkedListOps {
 	public static void main(String[] args) {
 		LinkedListNode list1 = new LinkedListNode(5);

@@ -5,16 +5,18 @@ public class MergeSort {
 
 		int[] arr = { 1, 2, 4, -1, -5, 7, -10 };
 
-		mergeSort(arr, 0, arr.length);
-
+		mergeSort(arr, 0, arr.length-1);
+		for(int x : arr) {
+			System.out.print(x+" ");
+		}
 	}
-
+// 
 	private static void mergeSort(int[] arr, int l, int r) {
 		if (l < r) {
-			int m = (r - l) / 2 + l;
+			int m = l+  (r - l) / 2 ;
 
 			mergeSort(arr, l, m);
-			mergeSort(arr, m + 1, r);
+			mergeSort(arr, m+1, r);
 
 			merge(arr, l, m, r);
 		}
@@ -26,13 +28,12 @@ public class MergeSort {
         int n1=m - l+1;
         int n2=r - m;
 		int[] L = new int[n1];// 3-0 = 3
-		int[] R = new int[n2];// 7-3= 4
+		int[] R = new int[n2];// 7-3= 5
 
 		for (int i = 0; i < n1; i++)
 			L[i] = arr[l+i];
-		for (int j = 0; j < n2; j++) {
-			System.out.println("dfd "+ j + m+1);
-			R[j] = arr[j + m];
+		for (int i = 0; i < n2; i++) {
+			R[i] = arr[m+i+1];
 		}
 			
 
