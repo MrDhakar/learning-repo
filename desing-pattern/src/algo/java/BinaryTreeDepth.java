@@ -47,6 +47,8 @@ public class BinaryTreeDepth {
 		System.out.println("\nleval num"+ tree.findLevel(root,13,0));
 		System.out.println("\nleval num"+ tree.findLevel(root,21,0));
 		System.out.println("\nleval num"+ tree.findLevel(root,tree.findLCA(root,13, 21).num,0));
+		
+		System.out.println("\nkth largest "+ tree.kthLargest(root, 2).num);
 		System.out.println();
 	}
 
@@ -169,6 +171,25 @@ class BinaryTree {
         return current;
 	}
 	
+	Node kthLargest(Node node, int k) {
+		int count=0;
+		Node curr= node;
+		Node kthLargest = node;
+		while(curr !=null) {
+			if(curr.right == null) {
+				count++;
+				if(count==k) return curr;
+				else curr= curr.left;
+			}
+			else {
+				Node succ = node.right;
+				
+			}
+		}
+		return kthLargest;
+		
+	}
+	
 	 void inorder(Node node)
     {
         if (node != null) {
@@ -206,3 +227,4 @@ class Node {
 
 	}
 }
+

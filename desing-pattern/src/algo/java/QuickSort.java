@@ -10,7 +10,7 @@ public class QuickSort {
 		}
 	}
 
-	private static void quickSort(int[] arr, int l, int r) {
+	public static void quickSort(int[] arr, int l, int r) {
 		// TODO Auto-generated method stub
 		if (l < r) {
             int partitionIndex = partition(arr,l,r);
