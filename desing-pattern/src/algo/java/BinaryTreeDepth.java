@@ -172,15 +172,21 @@ class BinaryTree {
 	}
 	
 	Node kthLargest(Node node, int k) {
-		
-		if(k==0) return node;
-		if (node != null) {
-			kthLargest(node.right,k--);
-            System.out.print(" " + node.num);
-            kthLargest(node.left,k--);
-        }
-		
-		return node;
+		int count=0;
+		Node curr= node;
+		Node kthLargest = node;
+		while(curr !=null) {
+			if(curr.right == null) {
+				count++;
+				if(count==k) return curr;
+				else curr= curr.left;
+			}
+			else {
+				Node succ = node.right;
+				
+			}
+		}
+		return kthLargest;
 		
 	}
 	
@@ -221,3 +227,4 @@ class Node {
 
 	}
 }
+

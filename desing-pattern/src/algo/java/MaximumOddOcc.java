@@ -17,8 +17,8 @@ public class MaximumOddOcc {
 		for(int i=0;i<arr.length;i++) {
 			if (hm.containsKey(arr[i])) {
 				hm.put(arr[i],hm.get(arr[i])+1 );
-				if (hm.get(arr[i])%2==0 && max<hm.get(arr[i])+1) {
-					 max=hm.get(arr[i])+1; num= arr[i]; }
+				if (hm.get(arr[i])%2==1 && max<hm.get(arr[i])) {
+					 max=hm.get(arr[i]); num= arr[i]; }
 				
 			}else {
 				hm.put(arr[i],1 );
