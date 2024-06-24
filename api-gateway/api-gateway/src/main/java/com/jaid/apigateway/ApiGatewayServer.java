@@ -25,12 +25,12 @@ public class ApiGatewayServer {
 	public RouteLocator myRoutes(RouteLocatorBuilder builder, UriConfiguration uriConfiguration) {
 		String httpUri = uriConfiguration.getHttpbin();
 		return builder.routes()
-				.route(p -> p.path("/get").filters(f -> f.addRequestHeader("Hello", "World")).uri(httpUri))
-				.route(p -> p.host("*localhost")
-						.filters(/*
-									 * f -> f.circuitBreaker(config ->
-									 * config.setName("jaidBreaker").setFallbackUri("forward:/fallback"))
-									 */)
+				.route(p -> p.path("/get").filters(f -> f.addRequestHeader("Hello", "World"))
+						/*
+						 * .uri(httpUri)) .route(p -> p.host("*localhost") .filters( f ->
+						 * f.circuitBreaker(config ->
+						 * config.setName("jaidBreaker").setFallbackUri("forward:/fallback")) )
+						 */
 						.uri(httpUri))
 				.build();
 	}
