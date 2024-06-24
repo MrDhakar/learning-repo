@@ -4,7 +4,7 @@ public class SubArraySum {
 
 	public static void main(String[] args) {
 		int [] arr ={1, 4, 20, 3, 10, 5};
-		subArraySum(arr,arr.length,5);
+		subArraySum(arr,arr.length,41);
 	}
 	
 	static void subArraySum(int[] arr, int n, int sum) {
@@ -13,10 +13,9 @@ public class SubArraySum {
 		for(int i=0;i<n;i++) {
 			currentSum+=arr[i];
 			
-			while (currentSum>sum) {
+			while (currentSum>sum && start<=i ) {
 				currentSum-=arr[start];
 				start++;
-				
 			}
 			
 			if(currentSum==sum) {
