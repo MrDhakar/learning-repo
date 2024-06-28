@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class JwtApiApplication {
+public class JwtAuthenticationApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JwtApiApplication.class, args);
+		SpringApplication.run(JwtAuthenticationApplication.class, args);
 	}
 
 }
