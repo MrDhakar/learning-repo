@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: jwt-authenticate-service
+  cloud:
+    gateway:
+      routes:
+      - id: example-service
+        uri: lb://EXAMPLE-SERVICE
+        predicates:
+        - Path=/example/**
+        filters:
+        - RemoveRequestHeader=Cookie
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://your-issuer-uri        
