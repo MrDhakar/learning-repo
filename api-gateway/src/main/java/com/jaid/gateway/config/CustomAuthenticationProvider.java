@@ -14,11 +14,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import com.jaid.gateway.service.IMyUserDetailService;
-import com.jaid.gateway.service.MyUserDetailService;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +24,7 @@ import com.jaid.gateway.service.MyUserDetailService;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	
 	@Autowired
-	private IMyUserDetailService userDetailService;
+	private UserDetailsService userDetailsService;
 	
 	@Override
 	public boolean supports(Class<?> authentication) {
@@ -54,7 +52,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		
 		final String name = authentication.getName();
 		final String password = authentication.getCredentials().toString();
-		UserDetails userDetails = userDetailService.findByUsername(name);
+		UserDetails userDetails = userDetailsService.loadUserByUsername(name);
 		if(name.equals(userDetails.getUsername()) && password.equals(userDetails.getPassword())) return true;
 		else return false;
 	}
