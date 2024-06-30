@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 
 import com.jaid.gateway.IController.IJwtAuthController;
 import com.jaid.gateway.model.UserData;
 import com.jaid.gateway.response.JwtAuthTokenResponse;
-import com.jaid.gateway.service.IMyUserDetailService;
+import com.jaid.gateway.service.ICustomUserDetailService;
 import com.jaid.gateway.util.JwtTokenUtil;
 
 @Controller
@@ -22,7 +23,7 @@ public class JwtAuthController implements IJwtAuthController {
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@Autowired
-	private IMyUserDetailService myUserDetailService;
+	private UserDetailsService userDetailService;
 	
 	@Override
 	public JwtAuthTokenResponse getJwtAuthToken(UserData userDataRequest) {
@@ -30,7 +31,7 @@ public class JwtAuthController implements IJwtAuthController {
 		JwtAuthTokenResponse response = new JwtAuthTokenResponse();
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDataRequest.getUsername(), userDataRequest.getPassword()));
 		
-		final UserDetails userDetails=myUserDetailService.findByUsername(userDataRequest.getUsername());
+		final UserDetails userDetails=userDetailService.loadUserByUsername(userDataRequest.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		response.setToken(token);
 		response.setUsername(userDetails.getUsername());
