@@ -45,4 +45,9 @@ class AysyncCallResource {
         return "Async task triggered!";
 
 	}
+	
+	/*
+	 * @AsyncExceptionHandler public void handleAsyncException(Exception e) { //
+	 * Handle asynchronous exceptions }
+	 */
 }
