@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.jaid.gateway.constants.ErrorCodes;
+import com.jaid.gateway.constants.ErrorCode;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -26,35 +26,35 @@ import lombok.extern.slf4j.Slf4j;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(ApplicationException.class)
-	public ResponseEntity<?> handleApplicationException(final ApplicationException exception,
+	@ExceptionHandler(ApplicationExceptions.class)
+	public ResponseEntity<?> handleApplicationException(final ApplicationExceptions exception,
 			final HttpServletRequest request) {
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, exception.getErrorCode(), exception.getMessage(),
+		var response = new ApplicationErrorResponse(guid, exception.getErrorCode(), exception.getMessage(),
 				exception.getHttpStatus().value(), exception.getHttpStatus().name(), request.getRequestURI(),
 				request.getMethod(), LocalDateTime.now());
 		return new ResponseEntity<>(response, exception.getHttpStatus());
 	}
 
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<?> handleResourceNotFoundException(final ResourceNotFoundException exception,
+	@ExceptionHandler(ApplicationResourceNotFoundException.class)
+	public ResponseEntity<?> handleApplictionResourceNotFoundException(final ApplicationResourceNotFoundException exception,
 			HttpHeaders headers, HttpStatus status, HttpServletRequest request) {
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, ErrorCodes.CLIENT_ERROR, "Client Request error.",
+		var response = new ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR, "Client Request error.",
 				HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), request.getRequestURI(),
 				request.getMethod(), LocalDateTime.now());
 		return new ResponseEntity<>(response, status);
 	}
 
-	@ExceptionHandler(UserNotFoundException.class)
+	@ExceptionHandler(ApplicationUserNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<?> handleUserNotFoundException(final UserNotFoundException exception, HttpHeaders headers,
+	public ResponseEntity<?> handleUserNotFoundException(final ApplicationUserNotFoundException exception, HttpHeaders headers,
 			HttpStatus status, HttpServletRequest request) {
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, ErrorCodes.CLIENT_ERROR, "Client Request error.",
+		var response = new ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR, "Client Request error.",
 				HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), request.getRequestURI(),
 				request.getMethod(), LocalDateTime.now());
 		return new ResponseEntity<>(response, status);
@@ -65,7 +65,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 			HttpHeaders headers, HttpStatus status, HttpServletRequest request) {
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, ErrorCodes.CLIENT_ERROR, "Client Request error.",
+		var response = new ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR, "Client Request error.",
 				HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), request.getRequestURI(),
 				request.getMethod(), LocalDateTime.now());
 		return new ResponseEntity<>(response, status);
@@ -77,7 +77,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, ErrorCodes.CLIENT_ERROR, "Client Request error.",
+		var response = new ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR, "Client Request error.",
 				HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), request.getRequestURI(),
 				request.getMethod(), LocalDateTime.now());
 		return new ResponseEntity<>(response, status);
@@ -88,7 +88,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 			HttpHeaders headers, HttpStatus status, HttpServletRequest request) {
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, ErrorCodes.CLIENT_ERROR, "Client Request error.",
+		var response = new ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR, "Client Request error.",
 				HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), request.getRequestURI(),
 				request.getMethod(), LocalDateTime.now());
 
@@ -100,7 +100,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 			HttpStatus status, HttpServletRequest request) {
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, ErrorCodes.INTERNAL_SERVER_ERROR, "Internal server error.",
+		var response = new ApplicationErrorResponse(guid, ErrorCode.INTERNAL_SERVER_ERROR, "Internal server error.",
 				HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.name(),
 				request.getRequestURI(), request.getMethod(), LocalDateTime.now());
 		return new ResponseEntity<>(response, status);
@@ -111,7 +111,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 			HttpServletRequest request) {
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, ErrorCodes.INTERNAL_SERVER_ERROR, "Internal server error.",
+		var response = new ApplicationErrorResponse(guid, ErrorCode.INTERNAL_SERVER_ERROR, "Internal server error.",
 				HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.name(),
 				request.getRequestURI(), request.getMethod(), LocalDateTime.now());
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -122,7 +122,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 			HttpServletRequest request) {
 		var guid = UUID.randomUUID().toString();
 		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ErrorResponse(guid, ErrorCodes.INTERNAL_SERVER_ERROR, "Internal server error.",
+		var response = new ApplicationErrorResponse(guid, ErrorCode.INTERNAL_SERVER_ERROR, "Internal server error.",
 				HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.name(),
 				request.getRequestURI(), request.getMethod(), LocalDateTime.now());
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
