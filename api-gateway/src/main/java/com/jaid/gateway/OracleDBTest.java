@@ -1,4 +1,4 @@
-package com.jaid.scheduler;
+package com.jaid.gateway;
 
 import java.sql.*;
 import java.util.Properties;
@@ -6,9 +6,9 @@ import java.util.Properties;
 public class OracleDBTest {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
-        String jdbcUrl = "jdbc:oracle:thin:@//localhost:1521/edgedb";
+        String jdbcUrl = "jdbc:oracle:thin:@//localhost:1521/aotdb";
         String username = "sys as sysdba";
-        String password = "Edge@123";
+        String password = "Edge@123#";
 
 
         // Register the PostgreSQL driver

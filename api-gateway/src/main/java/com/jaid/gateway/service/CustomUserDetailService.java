@@ -9,19 +9,20 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.jaid.gateway.entitiy.Privilege;
 import com.jaid.gateway.entitiy.Role;
-import com.jaid.gateway.entitiy.User;
+import com.jaid.gateway.entitiy.Users;
+import com.jaid.gateway.repository.PrivilegeRepository;
 import com.jaid.gateway.repository.RoleRepository;
 import com.jaid.gateway.repository.UserRepository;
 
 @Service
-public class CustomUserDetailService implements ICustomUserDetailService,UserDetailsService {
+public class CustomUserDetailService implements ICustomUserDetailService {
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -30,13 +31,16 @@ public class CustomUserDetailService implements ICustomUserDetailService,UserDet
 	private RoleRepository roleRepository;
 	
 	@Autowired
+	private PrivilegeRepository previlegeRepository;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	
 	@Override
-	public User registerNewUserAccount(User user) throws Exception  {
+	public Users registerNewUserAccount(Users user) throws Exception  {
 	   
-	    user.setFirstName(user.getFirstName());
+	    user.setName(user.getName());
 	    user.setLastName(user.getLastName());
 	    user.setPassword(passwordEncoder.encode(user.getPassword()));
 	    user.setEmail(user.getEmail());
@@ -61,23 +65,30 @@ public class CustomUserDetailService implements ICustomUserDetailService,UserDet
 	 */
 
 	@Override
-	public org.springframework.security.core.userdetails.User loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		final Set<GrantedAuthority> grantedAuths = new HashSet<>();
 	    grantedAuths.add(new RoleGrantedAuthority("ROLE_USER"));
 		//return new CustomUserDetails(username, "JAID", grantedAuths);
 		
-		User user = userRepository.findByName(username);
+		Users user = userRepository.findByName(username);
+		List<Role> roles = Arrays.asList(roleRepository.findByName("ROLE_USER"));
+		List<Privilege> privileges =  Arrays.asList(previlegeRepository.findByName("READ_PRIVILEGE"));
+		
+		user.setRoles(roles);
+		
 	        if (user == null) {
 	            return new org.springframework.security.core.userdetails.User(
 	              " ", " ", true, true, true, true, 
 	              getAuthorities(Arrays.asList(
 	                roleRepository.findByName("ROLE_USER"))));
 	        }
-
-	        return new org.springframework.security.core.userdetails.User(
-	          user.getEmail(), user.getPassword(), user.isEnabled(), true, true, 
-	          true, getAuthorities(user.getRoles()));
+	        return new CustomUserDetails(user.getName(), user.getPassword(),getAuthorities(user.getRoles()) );
+			/*
+			 * return new org.springframework.security.core.userdetails.User(
+			 * user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true,
+			 * getAuthorities(user.getRoles()));
+			 */
 		
 	}
 	
@@ -97,7 +108,7 @@ public class CustomUserDetailService implements ICustomUserDetailService,UserDet
         
         for (Role role : roles) {
             privileges.add(role.getName());
-            collection.addAll(role.getPrivileges());
+            //collection.addAll(role.getPrivileges());
         }
         for (Privilege item : collection) {
             privileges.add(item.getName());
@@ -105,11 +116,12 @@ public class CustomUserDetailService implements ICustomUserDetailService,UserDet
         return privileges;
     }
 
-    private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
+    private Set<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
         for (String privilege : privileges) {
             authorities.add(new RoleGrantedAuthority(privilege));
         }
         return authorities;
     }
+
 }

@@ -1,13 +1,12 @@
 package com.jaid.gateway.service;
 
-import com.jaid.gateway.entitiy.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.jaid.gateway.entitiy.Users;
 
 public interface ICustomUserDetailService {
 
-	/*
-	 * UserDetails findByUsername(String name);
-	 * 
-	 * UserDetails loadUserByUsername(String username);
-	 */
-	public User registerNewUserAccount(User user) throws Exception;
+	public UserDetails loadUserByUsername(String username);
+
+	public Users registerNewUserAccount(Users user) throws Exception;
 }

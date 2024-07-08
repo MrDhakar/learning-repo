@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -37,28 +36,32 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		return new ResponseEntity<>(response, exception.getHttpStatus());
 	}
 
-	@ExceptionHandler(ApplicationResourceNotFoundException.class)
-	public ResponseEntity<?> handleApplictionResourceNotFoundException(final ApplicationResourceNotFoundException exception,
-			HttpHeaders headers, HttpStatus status, HttpServletRequest request) {
-		var guid = UUID.randomUUID().toString();
-		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR, "Client Request error.",
-				HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), request.getRequestURI(),
-				request.getMethod(), LocalDateTime.now());
-		return new ResponseEntity<>(response, status);
-	}
-
-	@ExceptionHandler(ApplicationUserNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<?> handleUserNotFoundException(final ApplicationUserNotFoundException exception, HttpHeaders headers,
-			HttpStatus status, HttpServletRequest request) {
-		var guid = UUID.randomUUID().toString();
-		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR, "Client Request error.",
-				HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), request.getRequestURI(),
-				request.getMethod(), LocalDateTime.now());
-		return new ResponseEntity<>(response, status);
-	}
+	/*
+	 * @ExceptionHandler(ApplicationResourceNotFoundException.class) public
+	 * ResponseEntity<?> handleApplictionResourceNotFoundException(final
+	 * ApplicationResourceNotFoundException exception, HttpHeaders headers,
+	 * HttpStatus status, HttpServletRequest request) { var guid =
+	 * UUID.randomUUID().toString();
+	 * log.error(String.format("Error GUID=%s; error message: %s", guid,
+	 * exception.getMessage()), exception); var response = new
+	 * ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR,
+	 * "Client Request error.", HttpStatus.BAD_REQUEST.value(),
+	 * HttpStatus.BAD_REQUEST.name(), request.getRequestURI(), request.getMethod(),
+	 * LocalDateTime.now()); return new ResponseEntity<>(response, status); }
+	 * 
+	 * @ExceptionHandler(ApplicationUserNotFoundException.class)
+	 * 
+	 * @ResponseStatus(HttpStatus.NOT_FOUND) public ResponseEntity<?>
+	 * handleUserNotFoundException(final ApplicationUserNotFoundException exception,
+	 * HttpHeaders headers, HttpStatus status, HttpServletRequest request) { var
+	 * guid = UUID.randomUUID().toString();
+	 * log.error(String.format("Error GUID=%s; error message: %s", guid,
+	 * exception.getMessage()), exception); var response = new
+	 * ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR,
+	 * "Client Request error.", HttpStatus.BAD_REQUEST.value(),
+	 * HttpStatus.BAD_REQUEST.name(), request.getRequestURI(), request.getMethod(),
+	 * LocalDateTime.now()); return new ResponseEntity<>(response, status); }
+	 */
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<?> handleConstraintViolation(final ConstraintViolationException exception,
@@ -83,17 +86,21 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		return new ResponseEntity<>(response, status);
 	}
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<?> handleMethodArgumentNotValid(final MethodArgumentNotValidException exception,
-			HttpHeaders headers, HttpStatus status, HttpServletRequest request) {
-		var guid = UUID.randomUUID().toString();
-		log.error(String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()), exception);
-		var response = new ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR, "Client Request error.",
-				HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), request.getRequestURI(),
-				request.getMethod(), LocalDateTime.now());
-
-		return new ResponseEntity<>(response, status);
-	}
+	/*
+	 * @ExceptionHandler(MethodArgumentNotValidException.class) public
+	 * ResponseEntity<?> handleMethodArgumentNotValid(final
+	 * MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus
+	 * status, HttpServletRequest request) { var guid =
+	 * UUID.randomUUID().toString();
+	 * log.error(String.format("Error GUID=%s; error message: %s", guid,
+	 * exception.getMessage()), exception); var response = new
+	 * ApplicationErrorResponse(guid, ErrorCode.CLIENT_ERROR,
+	 * "Client Request error.", HttpStatus.BAD_REQUEST.value(),
+	 * HttpStatus.BAD_REQUEST.name(), request.getRequestURI(), request.getMethod(),
+	 * LocalDateTime.now());
+	 * 
+	 * return new ResponseEntity<>(response, status); }
+	 */
 
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<?> handleRuntimeException(final RuntimeException exception, HttpHeaders headers,

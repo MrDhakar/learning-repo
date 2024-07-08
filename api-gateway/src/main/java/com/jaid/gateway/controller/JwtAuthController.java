@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 
 import com.jaid.gateway.IController.IJwtAuthController;
@@ -23,7 +22,7 @@ public class JwtAuthController implements IJwtAuthController {
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@Autowired
-	private UserDetailsService userDetailService;
+	private ICustomUserDetailService userDetailService;
 	
 	@Override
 	public JwtAuthTokenResponse getJwtAuthToken(UserData userDataRequest) {
