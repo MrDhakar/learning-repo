@@ -18,13 +18,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import com.jaid.gateway.service.ICustomUserDetailService;
+
 @Configuration
 @EnableWebSecurity
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private ICustomUserDetailService userDetailsService;
 	
 	@Override
 	public boolean supports(Class<?> authentication) {

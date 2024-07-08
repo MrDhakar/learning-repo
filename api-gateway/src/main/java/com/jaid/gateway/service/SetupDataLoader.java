@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 
 import com.jaid.gateway.entitiy.Privilege;
 import com.jaid.gateway.entitiy.Role;
-import com.jaid.gateway.entitiy.User;
+import com.jaid.gateway.entitiy.Users;
 import com.jaid.gateway.repository.PrivilegeRepository;
 import com.jaid.gateway.repository.RoleRepository;
 import com.jaid.gateway.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
-@Component
+
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
 	boolean alreadySetup = false;
@@ -50,8 +50,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		createRoleIfNotFound("ROLE_USER", Arrays.asList(readPrivilege));
 
 		Role adminRole = roleRepository.findByName("ROLE_ADMIN");
-		User user = new User();
-		user.setFirstName("Test");
+		Users user = new Users();
+		user.setName("Test");
 		user.setLastName("Test");
 		user.setPassword(passwordEncoder.encode("test"));
 		user.setEmail("test@test.com");

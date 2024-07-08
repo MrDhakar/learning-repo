@@ -9,8 +9,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "role")
 public class Role {
 
 	@Id
@@ -19,10 +21,10 @@ public class Role {
 
 	private String name;
 	@ManyToMany(mappedBy = "roles")
-	private Collection<User> users;
+	private Collection<Users> users;
 
 	@ManyToMany
-	@JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+	@JoinTable(name = "role_privilege", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
 	private Collection<Privilege> privileges;
 
 	public Role(String name) {
@@ -37,20 +39,23 @@ public class Role {
 		this.name = name;
 	}
 
-	public Collection<User> getUsers() {
-		return users;
+	public Collection<Users> getUsers() {
+		return this.users;
 	}
 
-	public void setUsers(Collection<User> users) {
+	public void setUsers(Collection<Users> users) {
 		this.users = users;
 	}
 
 	public Collection<Privilege> getPrivileges() {
-		return privileges;
+		return this.privileges;
 	}
 
 	public void setPrivileges(Collection<Privilege> privileges) {
 		this.privileges = privileges;
+	}
+
+	public Role() {
 	}
 
 }

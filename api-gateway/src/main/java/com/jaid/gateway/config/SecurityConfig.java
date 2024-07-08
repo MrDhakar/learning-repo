@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,7 +35,7 @@ import com.jaid.gateway.service.JwtTokenFilter;
 public class SecurityConfig {
 
     @Autowired
-    private CustomAuthenticationProvider authProvider;
+    private AuthenticationProvider authProvider;
     
     @Autowired 
     private RestAuthenticationEntryPoint authenticationEntryPoint;
@@ -60,10 +61,17 @@ public class SecurityConfig {
             .httpBasic(Customizer.withDefaults())
             .build();*/
         
-        http.authorizeHttpRequests(req -> req.requestMatchers("/authtication/api/*").permitAll().
-        		anyRequest().authenticated())
-        .cors().and().csrf().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        http.authorizeHttpRequests(
+        		req -> req.requestMatchers("/","index","/css/*","/js/*","/favicon.ico").permitAll()
+        		.anyRequest()
+        		.authenticated()
+        		)
+        .cors()
+        .and()
+        .csrf()
+        .disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
 		.httpBasic(httpConfig -> httpConfig
 				.authenticationEntryPoint(authenticationEntryPoint));
         http.addFilterBefore(jwtTokentFilter, BasicAuthenticationFilter.class);
@@ -78,10 +86,7 @@ public class SecurityConfig {
     }
     
     
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+   
     
     @Bean
     public CorsFilter corsFilter() {

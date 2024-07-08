@@ -19,11 +19,11 @@ public class CustomUserDetails implements UserDetails{
 	
 	
 	
-	public CustomUserDetails(String username, String password, Set<GrantedAuthority> authorities) {
+	public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> collection) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.authorities = authorities;
+		this.authorities = (Set<GrantedAuthority>) collection;
 	}
 
 	@Override

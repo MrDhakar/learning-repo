@@ -9,15 +9,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
-public class User {
+@Table(name = "users")
+public class Users {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id; 
 	
-	private String firstName;
+	private String name;
 	private String lastName;
 	private String email;
 	private String password;
@@ -26,19 +28,19 @@ public class User {
 	
 	@ManyToMany 
     @JoinTable( 
-        name = "users_roles", 
+        name = "users_role", 
         joinColumns = @JoinColumn(
           name = "user_id", referencedColumnName = "id"), 
         inverseJoinColumns = @JoinColumn(
           name = "role_id", referencedColumnName = "id")) 
 	private Collection<Role> roles;
 
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getLastName() {
